@@ -1,0 +1,77 @@
+/**
+ *2 bit 1 to 8 demultiplexor
+ */
+
+CHIP q3 {
+    IN x0,x1,s2,s1,s0;
+    OUT y00,y01,y10,y11,y20,y21,y30,y31,y40,y41,y50,y51,y60,y61,y70,y71;
+
+    PARTS:
+    Not(in=s2, out=ns2);
+    Not(in=s1, out=ns1);
+    Not(in=s0, out=ns0);
+    //y00=s2'.s1'.s0'.x0;
+     And(a=ns2, b=ns1, out=a00);
+     And(a=ns0, b=x0, out=b00);
+     And(a=a00, b=b00, out=y00);
+    //y01=s2'.s1'.s0'.x1;
+     And(a=ns2, b=ns1, out=a01);
+     And(a=ns0, b=x1, out=b01);
+     And(a=a01, b=b01, out=y01);
+    //y10=s2'.s1'.s0.x0;
+     And(a=ns2, b=ns1, out=a10);
+     And(a=s0, b=x0, out=b10);
+     And(a=a10, b=b10, out=y10);
+    //y11=s2'.s1'.s0.x1;
+     And(a=ns2, b=ns1, out=a11);
+     And(a=s0, b=x1, out=b11);
+     And(a=a11, b=b11, out=y11);
+    //y20=s2'.s1.s0'.x0;
+     And(a=ns2, b=s1, out=a20);
+     And(a=ns0, b=x0, out=b20);
+     And(a=a20, b=b20, out=y20);
+    //y21=s2'.s1.s0'.x1;
+     And(a=ns2, b=s1, out=a21);
+     And(a=ns0, b=x1, out=b21);
+     And(a=a21, b=b21, out=y21);
+    //y30=s2'.s1.s0.x0;
+     And(a=ns2, b=s1, out=a30);
+     And(a=s0, b=x0, out=b30);
+     And(a=a30, b=b30, out=y30);
+    //y31=s2'.s1.s0.x1;
+     And(a=ns2, b=s1, out=a31);
+     And(a=s0, b=x1, out=b31);
+     And(a=a31, b=b31, out=y31);
+    //y40=s2.s1'.s0'.x0;
+     And(a=s2, b=ns1, out=a40);
+     And(a=ns0, b=x0, out=b40);
+     And(a=a40, b=b40, out=y40);
+    //y41=s2.s1'.s0'.x1;
+     And(a=s2, b=ns1, out=a41);
+     And(a=ns0, b=x1, out=b41);
+     And(a=a41, b=b41, out=y41);
+    //y50=s2.s1'.s0.x0;
+     And(a=s2, b=ns1, out=a50);
+     And(a=s0, b=x0, out=b50);
+     And(a=a50, b=b50, out=y50);
+    //y51=s2.s1'.s0.x1;
+     And(a=s2, b=ns1, out=a51);
+     And(a=s0, b=x1, out=b51);
+     And(a=a51, b=b51, out=y51);
+    //y60=s2.s1.s0'.x0;
+     And(a=s2, b=s1, out=a60);
+     And(a=ns0, b=x0, out=b60);
+     And(a=a60, b=b60, out=y60);
+    //y61=s2.s1.s0'.x1;
+     And(a=s2, b=s1, out=a61);
+     And(a=ns0, b=x1, out=b61);
+     And(a=a61, b=b61, out=y61);
+    //y70=s2.s1.s0.x0;
+     And(a=s2, b=s1, out=a70);
+     And(a=s0, b=x0, out=b70);
+     And(a=a70, b=b70, out=y70);
+    //y71=s2.s1.s0.x1;
+     And(a=s2, b=s1, out=a71);
+     And(a=s0, b=x1, out=b71);
+     And(a=a71, b=b71, out=y71);
+}

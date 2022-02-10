@@ -1,0 +1,55 @@
+/* 
+   q5: 3 to 8 decoder   
+
+   x0=ny0.ny1.ny2;
+   x1=ny0.ny1.y2;
+   x2=ny0.y1.ny2;
+   x3=ny0.y1.y2;
+   x4=y0.ny1.ny2;
+   x5=y0.ny1.y2;
+   x6=y0.y1.ny2;
+   x7=y0.y1.y2;
+*/
+
+CHIP q5
+{
+  IN y0,y1,y2;
+  OUT x0,x1,x2,x3,x4,x5,x6,x7;
+
+  PARTS:
+  Not (in=y0,out=ny0);
+  Not (in=y1,out=ny1);
+  Not (in=y2,out=ny2);
+  
+  //x0=ny0.ny1.ny2;
+  And (a=ny0,b=ny1,out=x00);
+  And (a=x00,b=ny2,out=x0);
+
+  //x1=ny0.ny1.y2;
+  And (a=ny0,b=ny1,out=x10);
+  And (a=x10,b=y2,out=x1);
+  
+  //x2=ny0.y1.ny2;
+  And (a=ny0,b=y1,out=x20);
+  And (a=x20,b=ny2,out=x2);
+
+  //x3=ny0.y1.y2;
+  And (a=ny0,b=y1,out=x30);
+  And (a=x30,b=y2,out=x3);
+
+  //x4=y0.ny1.ny2;
+  And (a=y0,b=ny1,out=x40);
+  And (a=x40,b=ny2,out=x4);
+
+  //x5=y0.ny1.y2;
+  And (a=y0,b=ny1,out=x50);
+  And (a=x50,b=y2,out=x5);
+
+  //x6=y0.y1.ny2;
+  And (a=y0,b=y1,out=x60);
+  And (a=x60,b=ny2,out=x6);
+
+  //x7=y0.y1.y2;
+  And (a=y0,b=y1,out=x70);
+  And (a=x70,b=y2,out=x7);
+}

@@ -1,0 +1,28 @@
+/**
+ *4 to 2 line priority encoder q3
+out1=x0'x1';
+out0=x0'x1+x0'x2';
+ */
+
+CHIP q3 {
+    IN x0, x1 ,x2 ,x3;
+    OUT out1,out0;
+
+    PARTS:
+   Not(in=x0,out=nx0);
+   Not(in=x1,out=nx1);
+   Not(in=x2, out=nx2);
+
+    //out1=x0'.x1';
+   And(a=nx0, b=nx1, out=out1);
+
+    //c=x0'+x1;
+   And(a=nx0, b=x1, out=c);
+
+    //d=x0'.x2'
+   And(a=nx0, b=nx2, out=d);
+
+    //out0=c+d=x0'.x1+x0'.x2';
+   Or(a=c, b=d, out=out0);
+   
+}

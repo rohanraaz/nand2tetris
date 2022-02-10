@@ -1,0 +1,10 @@
+CHIP Q2{
+    IN r0,r1,r2,r3,x00,x01,x10,x11,x20,x21,x30,x31;
+    OUT y0,y1;
+    PARTS:
+    //priority encoder
+    penc(x0=r0,x1=r1,x2=r2,x3=r3,y1=s1,y0=s0);
+
+    //output pins of priority encoder as select lines to mux
+    mux(x00=x00,x01=x01,x10=x10,x11=x11,x20=x20,x21=x21,x30=x30,x31=x31,s1=s1,s0=s0,y1=y1,y0=y0);
+}

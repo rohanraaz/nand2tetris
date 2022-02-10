@@ -1,0 +1,26 @@
+/*
+*16 bit adder using 4 bit CLA
+*of-> overflow detection {1 for overflow else 0}
+*as->addition or subtraction {1 for subtraction else 0}
+*for unsigned integers
+*/
+
+CHIP q2unsigned{
+    IN x[16],y[16],as;
+    OUT sum[16],of;
+
+    PARTS:
+    
+    //using 4-bit adder to build 16 bit adder
+    add4(a[0..3]=x[0..3],b[0..3]=y[0..3],as=as,c0=as,s[0..3]=sum[0..3],c4=c4,c3=c3);
+    add4(a[0..3]=x[4..7],b[0..3]=y[4..7],as=as,c0=c4,s[0..3]=sum[4..7],c4=c8,c3=c7);
+    add4(a[0..3]=x[8..11],b[0..3]=y[8..11],as=as,c0=c8,s[0..3]=sum[8..11],c4=c12,c3=c11);
+    add4(a[0..3]=x[12..15],b[0..3]=y[12..15],as=as,c0=c12,s[0..3]=sum[12..15],c4=c16,c3=c15);
+
+    //overflow detection for unsigned integers
+    Not(in=as, out=notas);
+    And(a=c16, b=notas, out=of);
+    
+    
+
+}

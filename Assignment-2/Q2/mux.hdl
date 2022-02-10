@@ -1,0 +1,48 @@
+/*
+y = [(s1's0,)x0] + [(s1's0)x1] + [(s1s0')x2] + [(s1s0)x3]
+*/
+
+//using the mux chip made in Q1 of assignment 2
+
+
+CHIP mux{
+    IN x00,x01,x10,x11,x20,x21,x30,x31,s1,s0;
+    OUT y0,y1;
+
+    PARTS:
+    Not(in=s0, out=nots0);
+    Not(in=s1, out=nots1);
+
+    //m0 = s1's0'
+    And(a=nots1, b=nots0, out=m0);
+    //m1 = s1's0
+    And(a=nots1, b=s0, out=m1);
+    //m2 = s1s0'
+    And(a=s1, b=nots0, out=m2);
+    //m3 = s1s0
+    And(a=s1, b=s0, out=m3);
+
+    // y = m0x0 + m1x1 + m2x2 + m3x3
+
+    And(a=m0, b=x00, out=out00);
+    And(a=m1, b=x10, out=out10);
+    And(a=m2, b=x20, out=out20);
+    And(a=m3, b=x30, out=out30);
+
+    Or(a=out00, b=out10, out=u0);
+    Or(a=out20, b=out30, out=u1);
+
+    Or(a=u0, b=u1, out=y0);
+
+
+
+    And(a=m0, b=x01, out=out01);
+    And(a=m1, b=x11, out=out11);
+    And(a=m2, b=x21, out=out21);
+    And(a=m3, b=x31, out=out31);
+
+    Or(a=out01, b=out11, out=v0);
+    Or(a=out21, b=out31, out=v1);
+
+    Or(a=v0, b=v1, out=y1);
+}

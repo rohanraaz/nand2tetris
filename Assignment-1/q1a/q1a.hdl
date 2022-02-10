@@ -1,0 +1,38 @@
+/*
+F = yz + xz' + wz' + w'x'z
+using And, Or & Not gates.
+*/
+
+CHIP q1a{
+	IN w,x,y,z;
+	OUT out;
+
+	PARTS:
+	Not(in = z , out = notz);
+	Not(in = w , out = notw);
+	Not(in = x , out = notx);
+
+	//w1 = yz
+	And(a=y , b=z , out = w1);
+
+	//w2 = xz'
+	And(a=x , b=notz , out = w2);
+
+	//w3 = wz'
+	And(a=w , b=notz , out = w3);
+
+	//temp = w'x'
+	And(a=notw , b=notx , out = temp);
+
+	//w4 = temp.z   =>  w4 = w'x'z
+	And(a=z , b=temp , out = w4);
+
+	//t1out = w1+w2
+	Or(a=w1 , b=w2 , out=t1out);
+
+	//t2out = w3+w4
+	Or(a=w3 , b=w4 , out=t2out);
+
+
+	Or(a=t1out , b=t2out , out=out);
+}

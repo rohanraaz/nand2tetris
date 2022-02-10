@@ -1,0 +1,40 @@
+/*
+F = [(yz)' . (xz')' . (wz')' . (w'x'z)']'
+*/
+
+CHIP q1b{
+    IN w,x,y,z;
+    OUT out;
+
+    PARTS:
+    Nand(a=w, b=w, out=notw);
+    Nand(a=x, b=x, out=notx);
+    Nand(a=z, b=z, out=notz);
+
+    //p1 = (yz)'
+    Nand(a=y, b=z, out=p1);
+
+    //p2 = (xz')'
+    Nand(a=x, b=notz, out=p2);
+
+    //P3 = (wz')'
+    Nand(a=w, b=notz, out=p3);
+
+    //p4 = (w'x'z)'
+    Nand(a=notw, b=notx, out=temp1);  //temp1 = (w'x')'
+    Nand(a=temp1, b=temp1, out=temp);  //temp = (w'x')
+    Nand(a=temp, b=z, out=p4);
+
+
+    //out = (p1.p2.p3.p4)'
+    //p1p2 = t1
+    //p3p4 = t2
+    Nand(a=p1, b=p2, out=t1temp);
+    Nand(a=p3, b=p4, out=t2temp);
+    
+    Nand(a=t1temp, b=t1temp, out=t1);
+    Nand(a=t2temp, b=t2temp, out=t2);
+
+    
+    Nand(a=t1, b=t2, out=out);
+}

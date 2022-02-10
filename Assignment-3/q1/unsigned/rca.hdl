@@ -1,0 +1,30 @@
+/*
+    addorsub = 0 addition of x and y (x+y)
+    addorsub = 1 difference of x and y (x-y)
+
+    (x-y) = (x+(-y))
+*/
+
+CHIP rca{
+    IN x[16],y[16],addorsub;
+    OUT s[16],of;
+
+    PARTS:
+    /*
+        yn = y if addorsub = 0
+        yn = -y if addorsub = 1
+    */
+    /*
+        here we are giving addorsub as the oth carry bit
+        when addorsub is 0 yn = y and oth carry bit is 0
+
+        if addorsub is 1 yn is the ones complement form of y and we take addorsub(= 1 in this case) as the carry bit
+        which is effectively taking yn as two's complement form of y and 0th carry bit as 0
+    */
+
+    Xor16(a=y,b=addorsub,out=yn);
+    adder(x=x,y=yn,c0=addorsub,s=s,c16=c16);
+
+    Not(in=addorsub, out=t);
+    And(a=t, b=c16, out=of);
+}

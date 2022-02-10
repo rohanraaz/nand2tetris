@@ -1,0 +1,43 @@
+/*
+  8-bit comparator
+  z=1 implies x=y
+  z=0 implies x!=y
+  z=(x0 xnor y0).(x1 xnor y1).(x2 xnor y2).(x3 xnor y3).(x4 xnor y4).(x5 xnor y5).(x6 xnor y6).(x7 xnor y7)
+*/
+
+CHIP q4
+{
+  IN x0,x1,x2,x3,x4,x5,x6,x7,x8,y0,y1,y2,y3,y4,y5,y6,y7,y8;
+  OUT z;
+
+  PARTS:
+
+  Xor(a=x0,b=y0,out=nxy0);
+  Xor(a=x1,b=y1,out=nxy1);
+  Xor(a=x2,b=y2,out=nxy2);
+  Xor(a=x3,b=y3,out=nxy3);
+  Xor(a=x4,b=y4,out=nxy4);
+  Xor(a=x5,b=y5,out=nxy5);
+  Xor(a=x6,b=y6,out=nxy6);
+  Xor(a=x7,b=y7,out=nxy7);
+
+  Not(in=nxy0,out=xy0);     // xy0= (x0 xnor y0)
+  Not(in=nxy1,out=xy1);     // xy1= (x1 xnor y1)
+  Not(in=nxy2,out=xy2);     // xy2= (x2 xnor y2)
+  Not(in=nxy3,out=xy3);     // xy3= (x3 xnor y3)
+  Not(in=nxy4,out=xy4);     // xy4= (x4 xnor y4)
+  Not(in=nxy5,out=xy5);     // xy5= (x5 xnor y5)
+  Not(in=nxy6,out=xy6);     // xy6= (x6 xnor y6)
+  Not(in=nxy7,out=xy7);     // xy7= (x7 xnor y7)
+
+  And(a=xy0,b=xy1,out=z01); // z01=(x0 xnor y0).(x1 xnor y1) 
+  And(a=xy2,b=xy3,out=z23); // z23=(x2 xnor y2).(x3 xnor y3)
+  And(a=xy4,b=xy5,out=z45); // z45=(x4 xnor y4).(x5 xnor y5)
+  And(a=xy6,b=xy7,out=z67); // z67=(x6 xnor y6).(x7 xnor y7)
+
+  And(a=z01,b=z23,out=z1);  // z1=(x0 xnor y0).(x1 xnor y1).(x2 xnor y2).(x3 xnor y3)
+  And(a=z45,b=z67,out=z2);  // z2=(x4 xnor y4).(x5 xnor y5).(x6 xnor y6).(x7 xnor y7)
+
+  And(a=z1,b=z2,out=z);
+}
+  

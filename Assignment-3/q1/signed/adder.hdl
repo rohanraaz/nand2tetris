@@ -1,0 +1,28 @@
+/*
+    given two inputs x and y adder adds both of them
+*/
+
+CHIP adder{
+    IN x[16],y[16],c0;
+    OUT s[16], of;
+
+    PARTS:
+    fulladd(xi=x[0],yi=y[0],ci=c0,sum=s[0],carry=c1);
+    fulladd(xi=x[1],yi=y[1],ci=c1,sum=s[1],carry=c2);
+    fulladd(xi=x[2],yi=y[2],ci=c2,sum=s[2],carry=c3);
+    fulladd(xi=x[3],yi=y[3],ci=c3,sum=s[3],carry=c4);
+    fulladd(xi=x[4],yi=y[4],ci=c4,sum=s[4],carry=c5);
+    fulladd(xi=x[5],yi=y[5],ci=c5,sum=s[5],carry=c6);
+    fulladd(xi=x[6],yi=y[6],ci=c6,sum=s[6],carry=c7);
+    fulladd(xi=x[7],yi=y[7],ci=c7,sum=s[7],carry=c8);
+    fulladd(xi=x[8],yi=y[8],ci=c8,sum=s[8],carry=c9);
+    fulladd(xi=x[9],yi=y[9],ci=c9,sum=s[9],carry=c10);
+    fulladd(xi=x[10],yi=y[10],ci=c10,sum=s[10],carry=c11);
+    fulladd(xi=x[11],yi=y[11],ci=c11,sum=s[11],carry=c12);
+    fulladd(xi=x[12],yi=y[12],ci=c12,sum=s[12],carry=c13);
+    fulladd(xi=x[13],yi=y[13],ci=c13,sum=s[13],carry=c14);
+    fulladd(xi=x[14],yi=y[14],ci=c14,sum=s[14],carry=c15);
+    fulladd(xi=x[15],yi=y[15],ci=c15,sum=s[15],carry=c16);
+
+    Xor(a=c16, b=c15, out=of);
+}

@@ -1,0 +1,15 @@
+CHIP fulladd{
+    IN xi,yi,ci;
+    OUT sum,carry;
+    
+    PARTS:
+    And(a=xi, b=yi, out=t1);
+    And(a=yi, b=ci, out=t2);
+    And(a=ci, b=xi, out=t3);
+
+    Or(a=t1, b=t2, out=tout);
+    Or(a=tout, b=t3, out=carry);
+
+    Xor(a=xi, b=yi, out=t);
+    Xor(a=t, b=ci, out=sum);
+}

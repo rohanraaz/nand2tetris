@@ -1,0 +1,41 @@
+/* 
+   2-bit 4-to-1 multiplexer
+
+   y1= ( ns1.ns0.x01 + ns1.s0.x11 + s1.ns0.x21 + s1.s0.x31 )
+   y0= ( ns1.ns0.x00 + ns1.s0.x10 + s1.ns0.x20 + s1.s0.x30 ) 
+
+*/
+
+CHIP q1
+{
+  IN s1,s0,x01,x00,x11,x10,x21,x20,x31,x30;
+  OUT y1,y0;
+
+  PARTS:
+  Not(in=s1,out=ns1);
+  Not(in=s0,out=ns0);
+
+  And(a=ns1,b=ns0,out=s00);
+  And(a=ns1,b=s0,out=s01);
+  And(a=s1,b=ns0,out=s10);
+  And(a=s1,b=s0,out=s11);
+
+  And(a=s00,b=x01,out=y10); //y10=ns1.ns0.x01
+  And(a=s01,b=x11,out=y11); //y11=ns1.s0.x11
+  And(a=s10,b=x21,out=y12); //y21=s1.ns0.x21
+  And(a=s11,b=x31,out=y13); //y31=s1.s0.x31
+
+  Or(a=y10,b=y11,out=y1a);  //y1a=ns1.ns0.x01+ns1.s0.x11
+  Or(a=y12,b=y13,out=y1b);  //y1b=s1.ns0.x21+s1.s0.x31
+  Or(a=y1a,b=y1b,out=y1);   //y1=ns1.ns0.x01 + ns1.s0.x11 + s1.ns0.x21 + s1.s0.x31
+
+  And(a=s00,b=x00,out=y00);  //y00=ns1.ns0.x00
+  And(a=s01,b=x10,out=y01);  //y01=ns1.s0.x10
+  And(a=s10,b=x20,out=y02);  //y02=s1.ns0.x20
+  And(a=s11,b=x30,out=y03);  //y03=s1.s0.x30
+
+  Or(a=y00,b=y01,out=y0a);   //y0a=ns1.ns0.x00 + ns1.s0.x10
+  Or(a=y02,b=y03,out=y0b);   //y0b=s1.ns0.x20 + s1.s0.x30
+  Or(a=y0a,b=y0b,out=y0);    //y0=ns1.ns0.x00 + ns1.s0.x10 + s1.ns0.x20 + s1.s0.x30
+}
+  
