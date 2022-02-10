@@ -1,0 +1,26 @@
+/* carry-bits */
+
+CHIP CarryBitsForCLA
+{
+  IN P[16],c0,c4,c8,c12,G[16];
+  OUT c1,c2,c3,c5,c6,c7,c9,c10,c11,c13,c14,c15;
+
+  PARTS:
+  
+  c4n1ForCLA(Pa=P[0],c0=c0,Ga=G[0],c4n1=c1);
+  c4n2ForCLA(Pa=P[1],Pb=P[0],c0=c0,Ga=G[1],Gb=G[0],c4n2=c2);
+  c4n3ForCLA(Pa=P[2],Pb=P[1],Pc=P[0],c0=c0,Ga=G[2],Gb=G[1],Gc=G[0],c4n3=c3);
+
+  c4n1ForCLA(Pa=P[4],c0=c4,Ga=G[4],c4n1=c5);
+  c4n2ForCLA(Pa=P[5],Pb=P[4],c0=c4,Ga=G[5],Gb=G[4],c4n2=c6);
+  c4n3ForCLA(Pa=P[6],Pb=P[5],Pc=P[4],c0=c4,Ga=G[6],Gb=G[5],Gc=G[4],c4n3=c7);
+  
+  c4n1ForCLA(Pa=P[8],c0=c8,Ga=G[8],c4n1=c9);
+  c4n2ForCLA(Pa=P[9],Pb=P[8],c0=c8,Ga=G[9],Gb=G[8],c4n2=c10);
+  c4n3ForCLA(Pa=P[10],Pb=P[9],Pc=P[8],c0=c8,Ga=G[10],Gb=G[9],Gc=G[8],c4n3=c11);
+
+  c4n1ForCLA(Pa=P[12],c0=c12,Ga=G[12],c4n1=c13);
+  c4n2ForCLA(Pa=P[13],Pb=P[12],c0=c12,Ga=G[13],Gb=G[12],c4n2=c14);
+  c4n3ForCLA(Pa=P[14],Pb=P[13],Pc=P[12],c0=c12,Ga=G[14],Gb=G[13],Gc=G[12],c4n3=c15);
+}
+  

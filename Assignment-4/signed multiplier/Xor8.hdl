@@ -1,0 +1,17 @@
+/*
+* out[i]= x[i] XOR y {for all 0<=i=<7}
+*/
+CHIP Xor8{
+    IN x[8],y;
+    OUT out[8];
+
+    PARTS:
+    Xor(a=x[0], b=y, out=out[0]);
+    Xor(a=x[1], b=y, out=out[1]);
+    Xor(a=x[2], b=y, out=out[2]);
+    Xor(a=x[3], b=y, out=out[3]);
+    Xor(a=x[4], b=y, out=out[4]);
+    Xor(a=x[5], b=y, out=out[5]);
+    Xor(a=x[6], b=y, out=out[6]);
+    Xor(a=x[7], b=y, out=out[7]);
+}

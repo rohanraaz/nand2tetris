@@ -1,0 +1,41 @@
+/* 
+4-BIT CLA BASED 16-BIT ADDER USING HIGH-LEVEL PROPOGATE AND GENERATE TERMS 
+    S=x+y;
+*/
+
+CHIP HigherCLA
+{
+  IN x[16],y[16];
+  OUT S[16];
+
+  PARTS:
+
+  //propogate terms - Pi=(xi xor yi)
+  Xor16(x=x,y=y,z=P);
+
+  //generate terms - Gi=(xi.yi)
+  And16(x=x,y=y,z=G);
+
+  //higher-level propogate terms
+  PropIForCLA(P=P,PI0=PI0,PI1=PI1,PI2=PI2,PI3=PI3);
+
+  //higher-level generate terms
+  GenIForCLA(P=P,c0=false,G=G,GI0=GI0,GI1=GI1,GI2=GI2,GI3=GI3);
+ 
+  //c4,c8,c12,c16 using high-level propogate and generate terms
+  c4n1ForCLA(Pa=PI0,c0=false,Ga=GI0,c4n1=c4);
+  c4n2ForCLA(Pa=PI1,Pb=PI0,c0=false,Ga=GI1,Gb=GI0,c4n2=c8);
+  c4n3ForCLA(Pa=PI2,Pb=PI1,Pc=PI0,c0=false,Ga=GI2,Gb=GI1,Gc=GI0,c4n3=c12);
+  GIForCLA(Pa=PI3,Pb=PI2,Pc=PI1,Pd=PI0,c0=false,Ga=GI3,Gb=GI2,Gc=GI1,Gd=GI0,GI=c16);
+
+  //remaining carrybits using c0,c4,c8,c12,propogate and generate terms
+  CarryBitsForCLA(P=P,c0=false,c4=c4,c8=c8,c12=c12,G=G,c1=c1,c2=c2,c3=c3,c5=c5,c6=c6,c7=c7,c9=c9,c10=c10,c11=c11,c13=c13,c14=c14,c15=c15);
+
+  //Si=(Pi xor ci)
+  SxorForCLA(P=P,c0=false,c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8,c9=c9,c10=c10,c11=c11,c12=c12,c13=c13,c14=c14,c15=c15,S=S);
+
+}
+
+  
+
+  

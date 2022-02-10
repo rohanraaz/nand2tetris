@@ -1,0 +1,38 @@
+/*
+  8-bit Wallace tree unsigned multiplier circuit
+  ->using carry save addition (CSA) based 3-to-2 reducers 
+  ->followed by CLA with higher-level propagate and generate terms
+*/
+
+CHIP Wallacetreeunsigned
+{
+  IN x[8],y[8];
+  OUT Product[8],OF;
+
+  PARTS:
+
+  PPgenerator(x=x,y=y,PP0=PP0,PP1=PP1,PP2=PP2,PP3=PP3,PP4=PP4,PP5=PP5,PP6=PP6,PP7=PP7);
+  
+  //level0 - (PP0,PP1,PP2),(PP3,PP4,PP5) left-(PP6,PP7)
+
+  Reducer16(x=PP0,y=PP1,z=PP2,S=S10,C=C10);
+  Reducer16(x=PP3,y=PP4,z=PP5,S=S11,C=C11);
+
+  //level1 - (S10,C10,S11),(C11,PP6,PP7)
+
+  ReducerWith1C(X=S10,Y=S11,C=C10,S=S20,Cout=C20);
+  ReducerWith1C(X=PP6,Y=PP7,C=C11,S=S21,Cout=C21);
+  
+  //level2 - (S20,C20,S21) left-C21
+
+  ReducerWith1C(X=S20,Y=S21,C=C20,S=S30,Cout=C30);
+  
+  //level3 - (S30,C30,C21)
+
+  ReducerWith2C(X=S30,C1=C21,C2=C30,S=S40,Cout=C40);
+
+  //level4 - S40+C40 using higher order CLA
+
+  AdderUsingCLA(S40=S40,C40=C40,Product=Product,OF=OF);
+
+}
