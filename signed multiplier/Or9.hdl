@@ -1,0 +1,18 @@
+/*
+*calculates the Or of 9 bits 
+*out = x0+x1+x2+x3+x4+x5+x6+x7+x8
+*/
+CHIP Or9{
+    IN x0,x1,x2,x3,x4,x5,x6,x7,x8;
+    OUT out;
+
+    PARTS:
+    Or(a=x0, b=x1, out=p1);
+    Or(a=p1, b=x2, out=p2);
+    Or(a=p2, b=x3, out=p3);
+    Or(a=p3, b=x4, out=p4);
+    Or(a=p4, b=x5, out=p5);
+    Or(a=p5, b=x6, out=p6);
+    Or(a=p6, b=x7, out=p7);
+    Or(a=p7, b=x8, out=out);
+}

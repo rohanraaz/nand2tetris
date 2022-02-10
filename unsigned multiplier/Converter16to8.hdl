@@ -1,0 +1,23 @@
+/*
+  Converts 16-bit bus to 8-bit bus and also outputs the overflow
+*/
+
+CHIP Converter16to8
+{
+  IN Product16[16];
+  OUT Product8[8],OF;
+
+  PARTS:
+
+  And(a=Product16[0],b=Product16[0],out=Product8[0]);
+  And(a=Product16[1],b=Product16[1],out=Product8[1]);
+  And(a=Product16[2],b=Product16[2],out=Product8[2]);
+  And(a=Product16[3],b=Product16[3],out=Product8[3]);
+  And(a=Product16[4],b=Product16[4],out=Product8[4]);
+  And(a=Product16[5],b=Product16[5],out=Product8[5]);
+  And(a=Product16[6],b=Product16[6],out=Product8[6]);
+  And(a=Product16[7],b=Product16[7],out=Product8[7]);
+
+  Or8(x1=Product16[8],x2=Product16[9],x3=Product16[10],x4=Product16[11],x5=Product16[12],x6=Product16[13],x7=Product16[14],x8=Product16[15],out=OF);
+}
+  

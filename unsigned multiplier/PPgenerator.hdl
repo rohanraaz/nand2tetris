@@ -1,0 +1,130 @@
+/*
+  CHIP for Generating Partial Products
+*/
+
+CHIP PPgenerator
+{
+  IN x[8],y[8];
+  OUT PP0[16],PP1[16],PP2[16],PP3[16],PP4[16],PP5[16],PP6[16],PP7[16];
+
+  PARTS:
+
+  //PP0 Generation
+  //PP0=00000000(x[7].y[0])(x[6].y[0])(x[5].y[0])(x[4].y[0])(x[3].y[0])(x[2].y[0])(x[1].y[0])(x[0].y[0]);
+
+  And8(a=x,b=y[0],out=PP0[0..7]);
+
+  And(a=false,b=false,out=PP0[8]);
+  And(a=false,b=false,out=PP0[9]);
+  And(a=false,b=false,out=PP0[10]);
+  And(a=false,b=false,out=PP0[11]);
+  And(a=false,b=false,out=PP0[12]);
+  And(a=false,b=false,out=PP0[13]);
+  And(a=false,b=false,out=PP0[14]);
+  And(a=false,b=false,out=PP0[15]);
+
+  //PP1 Generation
+  //PP1=0000000(x[7].y[1])(x[6].y[1])(x[5].y[1])(x[4].y[1])(x[3].y[1])(x[2].y[])(x[1].y[1])(x[0].y[1])0;
+
+  And(a=false,b=false,out=PP1[0]);
+
+  And8(a=x,b=y[1],out=PP1[1..8]);
+
+  And(a=false,b=false,out=PP1[9]);
+  And(a=false,b=false,out=PP1[10]);
+  And(a=false,b=false,out=PP1[11]);
+  And(a=false,b=false,out=PP1[12]);
+  And(a=false,b=false,out=PP1[13]);
+  And(a=false,b=false,out=PP1[14]);
+  And(a=false,b=false,out=PP1[15]);
+
+  //PP2 Generation
+  //PP2=000000(x[7].y[2])(x[6].y[2])(x[5].y[2])(x[4].y[2])(x[3].y[2])(x[2].y[])(x[1].y[2])(x[0].y[2])00;
+
+  And(a=false,b=false,out=PP2[0]);
+  And(a=false,b=false,out=PP2[1]);
+
+  And8(a=x,b=y[2],out=PP2[2..9]);
+
+  And(a=false,b=false,out=PP2[10]);
+  And(a=false,b=false,out=PP2[11]);
+  And(a=false,b=false,out=PP2[12]);
+  And(a=false,b=false,out=PP2[13]);
+  And(a=false,b=false,out=PP2[14]);
+  And(a=false,b=false,out=PP2[15]);
+  
+  //PP3 Generation
+  //PP3=00000(x[7].y[3])(x[6].y[3])(x[5].y[3])(x[4].y[3])(x[3].y[3])(x[2].y[])(x[1].y[3])(x[0].y[3])000;
+
+  And(a=false,b=false,out=PP3[0]);
+  And(a=false,b=false,out=PP3[1]);
+  And(a=false,b=false,out=PP3[2]);
+
+  And8(a=x,b=y[3],out=PP3[3..10]);
+
+  And(a=false,b=false,out=PP3[11]);
+  And(a=false,b=false,out=PP3[12]);
+  And(a=false,b=false,out=PP3[13]);
+  And(a=false,b=false,out=PP3[14]);
+  And(a=false,b=false,out=PP3[15]);
+  
+  //PP4 Generation
+  //PP4=0000(x[7].y[4])(x[6].y[4])(x[5].y[4])(x[4].y[4])(x[3].y[4])(x[2].y[])(x[1].y[4])(x[0].y[4])0000;
+
+  And(a=false,b=false,out=PP4[0]);
+  And(a=false,b=false,out=PP4[1]);
+  And(a=false,b=false,out=PP4[2]);
+  And(a=false,b=false,out=PP4[3]);
+
+  And8(a=x,b=y[4],out=PP4[4..11]);
+
+  And(a=false,b=false,out=PP4[12]);
+  And(a=false,b=false,out=PP4[13]);
+  And(a=false,b=false,out=PP4[14]);
+  And(a=false,b=false,out=PP4[15]);
+  
+  //PP5 Generation
+  //PP5=000(x[7].y[5])(x[6].y[5])(x[5].y[5])(x[4].y[5])(x[3].y[5])(x[2].y[])(x[1].y[5])(x[0].y[5])00000;
+
+  And(a=false,b=false,out=PP5[0]);
+  And(a=false,b=false,out=PP5[1]);
+  And(a=false,b=false,out=PP5[2]);
+  And(a=false,b=false,out=PP5[3]);
+  And(a=false,b=false,out=PP5[4]);
+
+  And8(a=x,b=y[5],out=PP5[5..12]);
+
+  And(a=false,b=false,out=PP5[13]);
+  And(a=false,b=false,out=PP5[14]);
+  And(a=false,b=false,out=PP5[15]);
+
+  //PP6 Generation
+  //PP6=00(x[7].y[6])(x[6].y[6])(x[5].y[6])(x[4].y[6])(x[3].y[6])(x[2].y[])(x[1].y[6])(x[0].y[6])000000;
+
+  And(a=false,b=false,out=PP6[0]);
+  And(a=false,b=false,out=PP6[1]);
+  And(a=false,b=false,out=PP6[2]);
+  And(a=false,b=false,out=PP6[3]);
+  And(a=false,b=false,out=PP6[4]);
+  And(a=false,b=false,out=PP6[5]);
+
+  And8(a=x,b=y[6],out=PP6[6..13]);
+
+  And(a=false,b=false,out=PP6[14]);
+  And(a=false,b=false,out=PP6[15]);
+  
+  //PP7 Generation
+  //PP7=0(x[7].y[7])(x[6].y[7])(x[5].y[7])(x[4].y[7])(x[3].y[7])(x[2].y[])(x[1].y[7])(x[0].y[7])0000000;
+
+  And(a=false,b=false,out=PP7[0]);
+  And(a=false,b=false,out=PP7[1]);
+  And(a=false,b=false,out=PP7[2]);
+  And(a=false,b=false,out=PP7[3]);
+  And(a=false,b=false,out=PP7[4]);
+  And(a=false,b=false,out=PP7[5]);
+  And(a=false,b=false,out=PP7[6]);
+
+  And8(a=x,b=y[7],out=PP7[7..14]);
+
+  And(a=false,b=false,out=PP7[15]);
+}

@@ -1,0 +1,44 @@
+/* 
+4-BIT CLA BASED 16-BIT ADDER USING HIGH-LEVEL PROPOGATE AND GENERATE TERMS 
+   
+  Sum S=x+Y;
+   s-> is the intital carry to the adder
+*/
+
+CHIP adder16 {
+  IN x[16],Y[16],s;
+  OUT S[16];
+
+  PARTS:
+  
+  //propogate terms - Pi=(xi xor Yi)
+  Xor16(x=x,y=Y,z=P);
+
+  //generate terms - Gi=(xi.Yi)
+  And16(x=x,y=Y,z=G);
+
+  //higher-level propogate terms
+  PropI(P=P,PI0=PI0,PI1=PI1,PI2=PI2,PI3=PI3);
+
+  //higher-level generate terms
+  GenI(P=P,c0=s,G=G,GI0=GI0,GI1=GI1,GI2=GI2,GI3=GI3);
+ 
+  //c4,c8,c12,c16 using high-level propogate and generate terms
+  c4n1(Pa=PI0,c0=s,Ga=GI0,c4n1=c4);
+  c4n2(Pa=PI1,Pb=PI0,c0=s,Ga=GI1,Gb=GI0,c4n2=c8);
+  c4n3(Pa=PI2,Pb=PI1,Pc=PI0,c0=s,Ga=GI2,Gb=GI1,Gc=GI0,c4n3=c12);
+  GI(Pa=PI3,Pb=PI2,Pc=PI1,Pd=PI0,c0=s,Ga=GI3,Gb=GI2,Gc=GI1,Gd=GI0,GI=c16);
+
+  //remaining carrybits using c0,c4,c8,c12,propogate and generate terms
+  CarryBits(P=P,c0=s,c4=c4,c8=c8,c12=c12,G=G,c1=c1,c2=c2,c3=c3,c5=c5,c6=c6,c7=c7,c9=c9,c10=c10,c11=c11,c13=c13,c14=c14,c15=c15);
+
+  //Si=(Pi xor ci)
+  Sxor(P=P,c0=s,c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8,c9=c9,c10=c10,c11=c11,c12=c12,c13=c13,c14=c14,c15=c15,S=S);
+  
+  //overflow=(cn xor cn-1)
+  //Xor(a=c16,b=c15,out=OF);
+}
+
+  
+
+  
