@@ -1,0 +1,84 @@
+/*
+    implementation of Hack CPU (processing unit)
+    This program simulates the hack CPU
+    consists of ALU, A register, D register
+    For registers, MUX and PC in-built chips are used
+*/
+
+CHIP HACKcpu{
+    IN inm[16],instruction[16],reset;
+    OUT out[16],writem,address[15],nextinstruction[15];
+
+    PARTS:
+    
+    Not(in=instruction[15], out=noti15);
+
+    //mux1 select line for mux1 is (i[15]')
+    Mux16(a=aluout, b=instruction, sel=noti15, out=mux1out);     //mux 1 out=a if sel=0
+
+    //clock signal for A register = (i[15]i[5] + i[15]')
+    And(a=instruction[15], b=instruction[5], out=temp);
+    Or(a=temp, b=noti15, out=writea);
+
+    //A-register
+    ARegister(in=mux1out, load=writea, out=regaout,out[0..14]=address);  
+
+    //select line for mux2 = i[15]i[12]
+    And(a=instruction[15], b=instruction[12], out=mux2sel);
+    Mux16(a=regaout, b=inm, sel=mux2sel, out=y);      //mux 2
+
+    And(a=instruction[15], b=instruction[4], out=writed);
+
+    //D-register
+    DRegister(in=aluout, load=writed, out=x);
+
+    //Hack-ALU 
+    HackALU(x=x,y=y,zx=instruction[11],nx=instruction[10],zy=instruction[9],ny=instruction[8],f=instruction[7],no=instruction[6],out=aluout,out=out,zr=zr,ng=ng);
+
+    //condition for write m signal
+    And(a=instruction[15], b=instruction[3], out=writem);
+
+
+    //jump condition
+    
+    Not(in=zr, out=nzr);
+    Not(in=ng, out=nng);
+    Not(in=instruction[2], out=ni2);
+    Not(in=instruction[1], out=ni1);
+    Not(in=instruction[0], out=ni0);
+
+    //j1 = 1, j2 = 1, j3 = 1 -> JMP (unconditional jump)
+    And4(a=instruction[2], b=instruction[1],c=instruction[0],d=instruction[15],out=jump1);
+    
+    //j1 = 1, j2 = 1, j3 = 0 -> (JLE)
+    And5(a=zr,b=ng,c=instruction[2],d=instruction[1],e=ni0,out=jump2temp);
+    And(a=jump2temp, b=instruction[15], out=jump2);
+
+    //j1 = 1, j2 = 0, j3 = 1 -> (JNE)
+    And4(a=nzr,b=instruction[2],c=ni1,d=instruction[0],out=jump3temp);
+    And(a=jump3temp, b=instruction[15], out=jump3);
+
+    //j1 = 1, j2 = 0, j3 = 0 -> (JLT)
+    And5(a=nzr,b=ng,c=instruction[2],d=ni1,e=ni0,out=jump4temp);
+    And(a=jump4temp, b=instruction[15], out=jump4);
+
+    //j1 = 0, j2 = 1, j3 = 1 -> (JLE)
+    And5(a=zr,b=nng,c=ni2,d=instruction[1],e=instruction[0],out=jump5temp);
+    And(a=jump5temp, b=instruction[15], out=jump5);
+
+    //j1 = 0, j2 = 1, j3 = 0 -> (JEQ)
+    And4(a=zr,b=ni2,c=instruction[1],d=ni0,out=jump6temp);
+    And(a=jump6temp, b=instruction[15], out=jump6);
+
+    //j1 = 0, j2 = 0, j3 = 1 -> (JGT)
+    And5(a=nzr,b=nng,c=ni2,d=ni1,e=instruction[0],out=jump7temp);
+    And(a=jump7temp, b=instruction[15], out=jump7);
+
+    Or7(i1=jump1,i2=jump2,i3=jump3,i4=jump4,i5=jump5,i6=jump6,i7=jump7,out=jump);    
+
+    Not(in=jump, out=njump);
+
+
+    //program counter - in built chip
+    PC(in=regaout, load=jump, inc=njump, reset=reset, out[0..14]=nextinstruction);
+}

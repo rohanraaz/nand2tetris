@@ -1,0 +1,16 @@
+/*
+* Hack computer parts - Instruction memory (ROM), HackCPU and Data memory (RAM)
+*
+*/
+
+CHIP Hackcomputer{
+    IN reset;
+
+    PARTS:
+    //Instruction memory - ROM32K is used
+    ROM32K(address=nextinstruction, out=instruction);
+    //CPU - procesisng instructions
+    HACKcpu(inm=inm,instruction=instruction,reset=reset,out=out,writem=writem,address[0..13]=address,nextinstruction=nextinstruction);
+    //Data memory - RAM16K is used
+    RAM16K(in=out, load=writem, address=address, out=inm);
+}

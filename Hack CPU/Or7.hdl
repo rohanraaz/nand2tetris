@@ -1,0 +1,16 @@
+/* 
+ Or gate with 7 inputs
+ out = i1+i2+i3+i4+i5+i6+i7 ;
+*/
+CHIP Or7{
+    IN i1,i2,i3,i4,i5,i6,i7;
+    OUT out;
+
+    PARTS:
+    Or(a=i1, b=i2, out=temp1);
+    Or(a=i3, b=i4, out=temp2);
+    Or(a=i5, b=i6, out=temp3);
+    Or(a=temp1, b=temp2, out=next1);
+    Or(a=temp3, b=next1, out=next2);
+    Or(a=next2,b=i7, out=out);
+}

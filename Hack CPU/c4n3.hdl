@@ -1,0 +1,14 @@
+CHIP c4n3{
+  IN Pa,Pb,Pc,c0,Ga,Gb,Gc;
+  OUT c4n3;
+
+  PARTS:
+
+  And4(a=Pa,b=Pb,c=Pc,d=c0,out=dum1);
+  And(a=Pa,b=Pb,out=dum2);
+  And(a=dum2,b=Gc,out=dum3);
+  And(a=Pa,b=Gb,out=dum4);
+  Or(a=dum1,b=dum3,out=dum5);
+  Or(a=dum4,b=Ga,out=dum6);
+  Or(a=dum5,b=dum6,out=c4n3);
+}

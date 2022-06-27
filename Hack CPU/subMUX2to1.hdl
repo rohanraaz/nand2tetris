@@ -1,0 +1,22 @@
+/*
+* 1-bit 2 to 1 multiplexor
+* s-> select line
+* out = x0 if s = 0
+*     = x1 if s = 1
+*/
+
+CHIP subMUX2to1{
+  IN x0,x1,s;
+  OUT out;
+
+  PARTS:
+
+  Not(in=s,out=ns);
+
+  And(a=ns,b=x0,out=outa);
+  And(a=s,b=x1,out=outb);
+
+  Or(a=outa,b=outb,out=out);
+}
+
+  

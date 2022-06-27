@@ -1,0 +1,13 @@
+@100
+D=M
+@101
+D=D-M
+@FOR_PART
+D;JGT
+@101
+D=M
+@100
+D=D-M
+(FOR_PART)
+@103
+M=D
