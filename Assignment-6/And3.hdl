@@ -1,0 +1,11 @@
+/*
+*   And3 out = a.b.c
+*/
+CHIP And3{
+    IN a,b,c;
+    OUT out;
+
+    PARTS:
+    And(a=a, b=b, out=t);
+    And(a=t, b=c, out=out);
+}

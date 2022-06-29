@@ -1,0 +1,40 @@
+/*
+*   unsigned wallace tree is designed for 8 bit floating point multiplication
+*   hence output is the first 7 bits leaving last 1 or 2 bits (depending on the first bit P15)
+*   
+*/
+CHIP unsignedwallacetree{
+    IN x[8],y[8];
+    OUT out[7],Pm15;
+
+    PARTS:
+    //partial products generation
+    unsignedppgenerator(x=x,y=y,pp0=pp0,pp1=pp1,pp2=pp2,pp3=pp3,pp4=pp4,pp5=pp5,pp6=pp6,pp7=pp7);
+
+    //we have 8 partial products pp0,pp1,pp2,pp3,pp4,pp5,pp6,pp7 -> level0
+
+    //level0
+    //(pp0+pp1+pp2) = s00,c00  (pp3+pp4+pp5) = s01,c01  pp6,pp7 -> carried to next level
+    reducer(x=pp0,y=pp1,z=pp2,s=s00,c=c00);
+    reducer(x=pp3,y=pp4,z=pp5,s=s01,c=c01);
+
+    //level1 s00,c00,s01,c01,pp6,pp7
+    //(s00+c00+s01) = s10,c10  (c01+pp6+pp7) = s11,c11
+    reducer(x=s00,y=c00,z=s01,s=s10,c=c10);
+    reducer(x=c01,y=pp6,z=pp7,s=s11,c=c11);
+
+    //level2 s10,c10,s11,c11
+    //(s10+c10+s11) = s20,c20  c11 -> carried to newxt level
+    reducer(x=s10,y=c10,z=s11,s=s20,c=c20);
+
+    //level3 s20,c20,c11
+    //(s20+c20+c11) = s30,c30
+    reducer(x=s20,y=c20,z=c11,s=s30,c=c30);
+
+    //add s30 and c30 to obtain product of x and y
+    CLA16(x=s30,y=c30,out[0..6]=P0to6,out[7]=P7,out[8..13]=P8to13,out[14]=P14,out[15]=P15);
+
+    MUX72to1(x0[0]=P7,x0[1..6]=P8to13, x1[0..5]=P8to13,x1[6]=P14, s=P15, out=out);
+    
+    And(a=P15,b=P15,out=Pm15);
+}

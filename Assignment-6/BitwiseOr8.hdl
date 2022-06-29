@@ -1,0 +1,18 @@
+/*
+*   performs bit wise OR on 2 8-bit binary numbers 
+*   out[i] = a[i] OR b[i]
+*/
+CHIP BitwiseOr8{
+    IN x[8],y[8];
+    OUT out[8];
+
+    PARTS:
+    Or(a=x[0], b=y[0], out=out[0]);
+    Or(a=x[1], b=y[1], out=out[1]);
+    Or(a=x[2], b=y[2], out=out[2]);
+    Or(a=x[3], b=y[3], out=out[3]);
+    Or(a=x[4], b=y[4], out=out[4]);
+    Or(a=x[5], b=y[5], out=out[5]);
+    Or(a=x[6], b=y[6], out=out[6]);
+    Or(a=x[7], b=y[7], out=out[7]);
+}

@@ -1,0 +1,17 @@
+/*
+* product out[i]=x[i].yi
+*/
+CHIP product{
+    IN x[8],yi;
+    OUT out[8];
+
+    PARTS:
+    And(a=x[0], b=yi, out=out[0]);
+    And(a=x[1], b=yi, out=out[1]);
+    And(a=x[2], b=yi, out=out[2]);
+    And(a=x[3], b=yi, out=out[3]);
+    And(a=x[4], b=yi, out=out[4]);
+    And(a=x[5], b=yi, out=out[5]);
+    And(a=x[6], b=yi, out=out[6]);
+    And(a=x[7], b=yi, out=out[7]);
+}

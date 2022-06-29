@@ -1,0 +1,42 @@
+/*
+ generates '8' 16-bit partial products for the product of x[8] and y[8] 
+ both x and y are unsigned
+*/
+CHIP unsignedppgenerator{
+    IN x[8],y[8];
+    OUT pp0[16],pp1[16],pp2[16],pp3[16],pp4[16],pp5[16],pp6[16],pp7[16];
+
+    PARTS:
+
+    //pp0 generation
+    product(x=x,yi=y[0],out=pp0[0..7]);
+    BitwiseAnd8(x[0..7]=false,y[0..7]=false,out=pp0[8..15]);
+
+    //pp1 generation
+    product(x=x,yi=y[1],out=pp1[1..8]);
+    BitwiseAnd8(x[0..7]=false,y[0..7]=false,out[0]=pp1[0],out[1..7]=pp1[9..15]);
+
+    //pp2 generation
+    product(x=x,yi=y[2],out=pp2[2..9]);
+    BitwiseAnd8(x[0..7]=false,y[0..7]=false,out[0..1]=pp2[0..1],out[2..7]=pp2[10..15]);
+    
+    //pp3 generation
+    product(x=x,yi=y[3],out=pp3[3..10]);
+    BitwiseAnd8(x[0..7]=false,y[0..7]=false,out[0..2]=pp3[0..2],out[3..7]=pp3[11..15]);
+    
+    //pp4 generator
+    product(x=x,yi=y[4],out=pp4[4..11]);
+    BitwiseAnd8(x[0..7]=false,y[0..7]=false,out[0..3]=pp4[0..3],out[4..7]=pp4[12..15]);
+    
+    //pp5 generator
+    product(x=x,yi=y[5],out=pp5[5..12]);
+    BitwiseAnd8(x[0..7]=false,y[0..7]=false,out[0..4]=pp5[0..4],out[5..7]=pp5[13..15]);
+    
+    //pp6 generator
+    product(x=x,yi=y[6],out=pp6[6..13]);
+    BitwiseAnd8(x[0..7]=false,y[0..7]=false,out[0..5]=pp6[0..5],out[6..7]=pp6[14..15]);
+    
+    //pp7 generator -> take the complement i.e x'.y[7]
+    product(x=x,yi=y[7],out=pp7[7..14]);
+    BitwiseAnd8(x[0..7]=false,y[0..7]=false,out[0..6]=pp7[0..6],out[7]=pp7[15]);
+}

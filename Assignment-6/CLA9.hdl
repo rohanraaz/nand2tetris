@@ -1,0 +1,26 @@
+/*
+*  9 bit carry look ahead adder
+*   addorsub = 1 for subtraction
+*            = 0 for addition
+*/
+CHIP CLA9{
+    IN x[9],y[9],addorsub;
+    OUT out[9];
+
+    PARTS:
+    
+    //taking xor of y with addorsub bit
+    BitwiseXor9(x[0]=addorsub,x[1]=addorsub,x[2]=addorsub,x[3]=addorsub,x[4]=addorsub,x[5]=addorsub,x[6]=addorsub,x[7]=addorsub,x[8]=addorsub,y=y,p=xory);
+
+    //propogate term generation
+    BitwiseXor9(x=x,y=xory,p=p);
+
+    //generate terms generation
+    BitwiseAnd9(x=x,y=xory,g=g);
+
+    //carry bit generation
+    carry9(p=p,g=g,c0=addorsub,c=c);
+
+    //sum bit generation
+    BitwiseXor9(x=p,y=c,p=out);
+}

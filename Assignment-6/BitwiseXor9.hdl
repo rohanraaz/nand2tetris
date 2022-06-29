@@ -1,0 +1,19 @@
+/*
+*   performs bitwise XOR on 2 9-bit binary numbers
+*   out[i] = a[i] XOR b[i]
+*/
+CHIP BitwiseXor9{
+    IN x[9],y[9];
+    OUT p[9];
+
+    PARTS:
+    Xor(a=x[0],b=y[0],out=p[0]);
+    Xor(a=x[1],b=y[1],out=p[1]);
+    Xor(a=x[2],b=y[2],out=p[2]);
+    Xor(a=x[3],b=y[3],out=p[3]);
+    Xor(a=x[4],b=y[4],out=p[4]);
+    Xor(a=x[5],b=y[5],out=p[5]);
+    Xor(a=x[6],b=y[6],out=p[6]);
+    Xor(a=x[7],b=y[7],out=p[7]);
+    Xor(a=x[8],b=y[8],out=p[8]);
+}

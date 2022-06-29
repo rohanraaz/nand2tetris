@@ -1,0 +1,19 @@
+/*
+* 7-bit 2 to 1 multiplexor 
+* s -> selct line
+*/
+CHIP MUX72to1
+{
+  IN x0[7],x1[7],s;
+  OUT out[7];
+
+  PARTS:
+
+  subMUX2to1(x0=x0[0],x1=x1[0],s=s,out=out[0]);
+  subMUX2to1(x0=x0[1],x1=x1[1],s=s,out=out[1]);
+  subMUX2to1(x0=x0[2],x1=x1[2],s=s,out=out[2]);
+  subMUX2to1(x0=x0[3],x1=x1[3],s=s,out=out[3]);
+  subMUX2to1(x0=x0[4],x1=x1[4],s=s,out=out[4]);
+  subMUX2to1(x0=x0[5],x1=x1[5],s=s,out=out[5]);
+  subMUX2to1(x0=x0[6],x1=x1[6],s=s,out=out[6]);
+}

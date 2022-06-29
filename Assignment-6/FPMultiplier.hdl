@@ -1,0 +1,31 @@
+/*
+* 16 bit Floating point multiplier 
+* (sign-1 bit, exponent-8 bits, mantissa-7 bits)
+* 
+*/
+
+CHIP FPMultiplier{
+  IN x[16],y[16];
+  OUT z[16];
+
+  PARTS:
+  //sign bit Zs (1 bit)
+  Xor(a=x[15],b=y[15],out=z[15]);
+
+  //mantissa bit Zm (7 bits)
+  //7-bit 2 to 1 multiplier is included in the wallace tree
+  unsignedwallacetree(x[7]=true,x[0..6]=x[0..6],y[7]=true,y[0..6]=y[0..6],out=z[0..6],Pm15=Pm15);
+
+  //exponent bit ZE (8 bits)
+  //XEplusYE = XE + YE
+  CLA9(x[8]=false,x[0..7]=x[7..14],y[8]=false,y[0..7]=y[7..14],out=XEplusYE);
+  
+  //ZE0 = XE + YE - 127
+  //ZE1 = XE + YE - 126
+  CLA9(x=XEplusYE,y[8]=false,y[7]=false,y[6]=true,y[5]=true,y[4]=true,y[3]=true,y[2]=true,y[1]=true,y[0]=true,addorsub=true,out[0..7]=ZE0);
+  CLA9(x=XEplusYE,y[8]=false,y[7]=false,y[6]=true,y[5]=true,y[4]=true,y[3]=true,y[2]=true,y[1]=true,y[0]=false,addorsub=true,out[0..7]=ZE1);
+
+  //using MUX to select ZE0 or ZE1 depending upon Pm15 (select line bit)
+  MUX82to1(x0=ZE0,x1=ZE1,s=Pm15,out=z[7..14]);
+  
+}

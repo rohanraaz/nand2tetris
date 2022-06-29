@@ -1,0 +1,61 @@
+CHIP carry9{
+    IN p[9],g[9],c0;
+    OUT c[9];
+
+    PARTS:
+    //c[0] generation
+    And(a=c0, b=c0, out=c[0]);
+    
+    //c[1] generation
+    And(a=p[0], b=c0, out=c10);
+
+    Or(a=c10, b=g[0], out=c[1]);
+
+    //c[2] generation
+    And3(a=p[1],b=p[0],c=c0,out=c20);
+    And(a=p[1], b=g[0], out=c21);
+
+    Or3(a=c20,b=c21,c=g[1],out=c[2]);
+
+    //c[3] generation
+    And4(a=p[2],b=p[1],c=p[0],d=c0,out=c30);
+    And3(a=p[2],b=p[1],c=g[0],out=c31);
+    And(a=p[2], b=g[1], out=c32);
+
+    Or4(a=c30,b=c31,c=c32,d=g[2],out=c[3]);
+
+    //c[4] generation
+    And5(a=p[3],b=p[2],c=p[1],d=p[0],e=c0,out=c40);
+    And4(a=p[3],b=p[2],c=p[1],d=g[0],out=c41);
+    And3(a=p[3],b=p[2],c=g[1],out=c42);
+    And(a=p[3], b=g[2], out=c43);
+
+    Or5(a=c40,b=c41,c=c42,d=c43,e=g[3],out=c4);
+    And(a=c4, b=c4, out=c[4]);
+
+    //c[5] generation
+    And(a=p[4], b=c4, out=c50);
+
+    Or(a=c50, b=g[4], out=c[5]);
+
+    //c[6] generation
+    And3(a=p[5],b=p[4],c=c4,out=c60);
+    And(a=p[5], b=g[4], out=c61);
+
+    Or3(a=c60,b=c61,c=g[5],out=c[6]);
+
+    //c[7] generation
+    And4(a=p[6],b=p[5],c=p[4],d=c4,out=c70);
+    And3(a=p[6],b=p[5],c=g[4],out=c71);
+    And(a=p[6], b=g[5], out=c72);
+
+    Or4(a=c70,b=c71,c=c72,d=g[6],out=c[7]);
+
+    //c8 generation
+    And5(a=p[7],b=p[6],c=p[5],d=p[4],e=c4,out=c80);
+    And4(a=p[7],b=p[6],c=p[5],d=g[4],out=c81);
+    And3(a=p[7],b=p[6],c=g[5],out=c82);
+    And(a=p[7], b=g[6], out=c83);
+
+    Or5(a=c80,b=c81,c=c82,d=c83,e=g[7],out=c[8]);
+}
