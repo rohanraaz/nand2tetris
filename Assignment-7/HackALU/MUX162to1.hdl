@@ -1,0 +1,29 @@
+/*
+* 16-bit 2 to 1 multiplexor
+* s -> select line
+* out[16] = x[16] if s = 0
+*         = y[16] if s = 1
+*/
+
+CHIP MUX162to1{
+    IN x[16],y[16],s;
+    OUT out[16];
+
+    PARTS:
+    subMUX2to1(x0=x[0], x1=y[0], s=s, out=out[0]);
+    subMUX2to1(x0=x[1], x1=y[1], s=s, out=out[1]);
+    subMUX2to1(x0=x[2], x1=y[2], s=s, out=out[2]);
+    subMUX2to1(x0=x[3], x1=y[3], s=s, out=out[3]);
+    subMUX2to1(x0=x[4], x1=y[4], s=s, out=out[4]);
+    subMUX2to1(x0=x[5], x1=y[5], s=s, out=out[5]);
+    subMUX2to1(x0=x[6], x1=y[6], s=s, out=out[6]);
+    subMUX2to1(x0=x[7], x1=y[7], s=s, out=out[7]);
+    subMUX2to1(x0=x[8], x1=y[8], s=s, out=out[8]);
+    subMUX2to1(x0=x[9], x1=y[9], s=s, out=out[9]);
+    subMUX2to1(x0=x[10], x1=y[10], s=s, out=out[10]);
+    subMUX2to1(x0=x[11], x1=y[11], s=s, out=out[11]);
+    subMUX2to1(x0=x[12], x1=y[12], s=s, out=out[12]);
+    subMUX2to1(x0=x[13], x1=y[13], s=s, out=out[13]);
+    subMUX2to1(x0=x[14], x1=y[14], s=s, out=out[14]);
+    subMUX2to1(x0=x[15], x1=y[15], s=s, out=out[15]);
+}

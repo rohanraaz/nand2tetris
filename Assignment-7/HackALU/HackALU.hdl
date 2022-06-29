@@ -1,0 +1,39 @@
+/*
+*   HACK ALU - 16 bit
+*   with inputs x[16] and y[16]
+*   control signals zx, nx, zy, ny, f, no
+*   output value out[16]
+*   status bits zr, ng
+*/
+
+CHIP HackALU{
+    IN x[16], y[16], zx, nx, zy, ny, f, no;
+    OUT out[16], zr, ng;
+
+    PARTS:
+    MUX162to1(x=x, y[0..15]=false, s=zx, out=x1);
+    MUX162to1(x=y, y[0..15]=false, s=zy, out=y1);
+
+    //p = x1 XOR nx
+    XOR16to1(a=x1, b=nx, out=p);
+    //q = y1 XOR ny
+    XOR16to1(a=y1, b=ny, out=q);
+
+    //pplusq = p+q (for each bit)
+    adder16(x=p, Y=q, s=false, S=pplusq);
+
+    //pandq = p&q (for each bit)
+    BitwiseAnd16(a=p, b=q, out=pandq);
+
+    MUX162to1(x=pandq, y=pplusq, s=f, out=r);
+    XOR16to1(a=r, b=no, out=out);
+    XOR16to1(a=r, b=no, out=out1, out[15]=out15);
+
+    //ng = 1 if out<0
+    //   = 0 if out>=0
+    And(a=out15, b=out15, out=ng);
+
+    //zr = 1 if out=0
+    //   = 0 if out!=0
+    checkzero(in=out1, out=zr);
+}
