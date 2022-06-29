@@ -1,0 +1,38 @@
+CHIP unsignedwallacetree{
+    IN x[8],y[8];
+    OUT out[8],of;
+
+    PARTS:
+    //partial products generation
+    unsignedppgenerator(x=x,y=y,pp0=pp0,pp1=pp1,pp2=pp2,pp3=pp3,pp4=pp4,pp5=pp5,pp6=pp6,pp7=pp7);
+
+    //we have 8 partial products pp0,pp1,pp2,pp3,pp4,pp5,pp6,pp7 -> level0
+
+    //level0
+    //(pp0+pp1+pp2) = s00,c00  (pp3+pp4+pp5) = s01,c01  pp6,pp7 -> carried to next level
+    reducer(x=pp0,y=pp1,z=pp2,s=s00,c=c00);
+    reducer(x=pp3,y=pp4,z=pp5,s=s01,c=c01);
+
+    //level1 s00,c00,s01,c01,pp6,pp7
+    //(s00+c00+s01) = s10,c10  (c01+pp6+pp7) = s11,c11
+    reducer(x=s00,y=c00,z=s01,s=s10,c=c10);
+    reducer(x=c01,y=pp6,z=pp7,s=s11,c=c11);
+
+    //level2 s10,c10,s11,c11
+    //(s10+c10+s11) = s20,c20  c11 -> carried to newxt level
+    reducer(x=s10,y=c10,z=s11,s=s20,c=c20);
+
+    //level3 s20,c20,c11
+    //(s20+c20+c11) = s30,c30
+    reducer(x=s20,y=c20,z=c11,s=s30,c=c30);
+
+    //add s30 and c30 to obtain product of x and y
+    CLA16(x=s30,y=c30,out[0..7]=out,out[8]=p8,out[9]=p9,out[10]=p10,out[11]=p11,out[12]=p12,out[13]=p13,out[14]=p14,out[15]=p15);
+
+    //overflow bit
+    //of = p8+p9+p10+p11+p12+p13+p14+p15
+    Or4(a=p8,b=p9,c=p10,d=p11,out=of1);
+    Or4(a=p12,b=p13,c=p14,d=p15,out=of2);
+
+    Or(a=of1, b=of2, out=of);
+}

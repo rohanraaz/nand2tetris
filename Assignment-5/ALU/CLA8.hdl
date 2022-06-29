@@ -1,0 +1,52 @@
+/*
+    addorsub = 0 for addition of x and y (x+y)
+    addorsub = 1 for difference of x and y (x-y)
+
+    (x-y) = (x+(-y))
+
+    ubys = 0 unsigned
+    ubys = 1 signed
+*/
+
+CHIP CLA8{
+    IN x[8],y[8],addorsub,ubys;
+    OUT out[8],of;
+
+    PARTS:
+
+    //newy = bitwise xor of each bit of y with addorsub
+    BitwiseXor8(x[0]=addorsub,x[1]=addorsub,x[2]=addorsub,x[3]=addorsub,x[4]=addorsub,x[5]=addorsub,x[6]=addorsub,x[7]=addorsub,y=y,out=newy);
+    
+    //generation of propagate bits
+    BitwiseXor8(x=x,y=newy,out=p);
+
+    //generation of generate bits
+    BitwiseAnd8(x=x,y=newy,out=g);
+
+    //generating carry bits
+    carry8(p=p,g=g,c0=addorsub,c=c,c8=c8,c[7..7]=c7);
+
+    //generating sum bits from carry and propogate bits
+    BitwiseXor8(x=p,y=c,out=out);
+
+    //generation of overflow bit
+    /*
+        if ubys (u/s) is 0 i.e unsigned integer operation of = c8 xor x7
+        if ubys (u/s) is 1 i.e signed integer operation of = (addorsub)' and c8
+            since we assume that overflow of signed integers doesnt occur while subtraction. The inputs that we give will satisfy x > y
+    */
+
+    Not(in=addorsub, out=naddorsub);
+    And(a=naddorsub, b=c8, out=uof);  //overflow bit for unsigned integers operation
+
+    Xor(a=c8, b=c7, out=sof);         //overflow bit for signed integers operation
+
+    Not(in=ubys, out=nubys);
+
+    //of = (ubys').(uof) + (ubys)(sof)
+
+    And(a=nubys, b=uof, out=of1);
+    And(a=ubys, b=sof, out=of2);
+
+    Or(a=of1, b=of2, out=of);
+}

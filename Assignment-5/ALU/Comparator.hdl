@@ -1,0 +1,26 @@
+/*
+* comparator checks if x and y are equal or not
+* out = 1 if x=y
+*     = 0 if x!=y
+*/
+CHIP Comparator{
+    IN x[8],y[8];
+    OUT out;
+
+    PARTS:
+    //out[i] = x[i] Xnor y[i]
+    Xnor(a=x[0],b=y[0],out=out0);
+    Xnor(a=x[1],b=y[1],out=out1);
+    Xnor(a=x[2],b=y[2],out=out2);
+    Xnor(a=x[3],b=y[3],out=out3);
+    Xnor(a=x[4],b=y[4],out=out4);
+    Xnor(a=x[5],b=y[5],out=out5);
+    Xnor(a=x[6],b=y[6],out=out6);
+    Xnor(a=x[7],b=y[7],out=out7);
+
+    //out = out0.out1.....out7
+    And4(a=out0,b=out1,c=out2,d=out3,out=t1);
+    And4(a=out4,b=out5,c=out6,d=out7,out=t2);
+
+    And(a=t1, b=t2, out=out);
+}

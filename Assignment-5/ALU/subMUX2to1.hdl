@@ -1,0 +1,17 @@
+/*
+*   1 bit 2 to 1 Multiplexor
+*   out = x if s=1
+*   out = y if s=0
+*/
+CHIP subMUX2to1{
+    IN x,y,sel;
+    OUT out;
+
+    PARTS:
+    Not(in=sel, out=ns);
+
+    And(a=sel, b=x, out=out1);
+    And(a=ns, b=y, out=out2);
+
+    Or(a=out1, b=out2, out=out);
+}

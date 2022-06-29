@@ -1,0 +1,19 @@
+/*
+*    2 to 1 Multiplexor (8 bit)
+*    output = x if sel = 1
+            = y if sel = 0
+*/
+CHIP MUX2to1{
+    IN x[8],y[8],sel;
+    OUT out[8];
+
+    PARTS:
+   subMUX2to1(x=x[0],y=y[0],sel=sel,out=out[0]);
+   subMUX2to1(x=x[1],y=y[1],sel=sel,out=out[1]);
+   subMUX2to1(x=x[2],y=y[2],sel=sel,out=out[2]);
+   subMUX2to1(x=x[3],y=y[3],sel=sel,out=out[3]);
+   subMUX2to1(x=x[4],y=y[4],sel=sel,out=out[4]);
+   subMUX2to1(x=x[5],y=y[5],sel=sel,out=out[5]);
+   subMUX2to1(x=x[6],y=y[6],sel=sel,out=out[6]);
+   subMUX2to1(x=x[7],y=y[7],sel=sel,out=out[7]);
+}

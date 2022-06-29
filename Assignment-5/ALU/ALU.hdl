@@ -1,0 +1,49 @@
+/*
+*   ALU - Arithmetic Logic Unit
+*   x[8],y[8] -> 8 bit binary operands
+*   z[8]      -> result after operations are performed
+*   c[3]      -> opcode 
+*   of        -> overflow bit
+*   eq        -> equality bit
+
+*   ubys (u/s bit) = 0 for unsigned numbers
+*                  = 1 for signed numbers
+*/
+CHIP ALU{
+    IN x[8],y[8],ubys,c[3];
+    OUT z[8],of,eq;
+
+    PARTS:
+    BitwiseAnd8(x=x,y=y,out=xandy);
+    BitwiseOr8(x=x,y=y,out=xory);
+    BitwiseXor8(x=x,y=y,out=xxory);
+
+    MUX4to1(c1=c[1],c0=c[0],x0[0..7]=false,x1=xandy,x2=xory,x3=xxory,out=z1);
+
+    //addition 
+    //aof is the overflow bit for addition 
+    CLA8(x=x,y=y,ubys=ubys,addorsub=false,out=xplusy,of=aof);  
+    
+    //subtraction
+    //sof is the overflow bit for subtraction 
+    CLA8(x=x,y=y,ubys=ubys,addorsub=true,out=xminusy,of=sof);  
+    
+    //multiplication for unsigned
+    //ofum is the overflow bit for multiplication of unsigned integers
+    unsignedwallacetree(x=x,y=y,out=xdotyu,of=ofum);          
+    
+    //multiplication for signed
+    //ofsm is the overflow bit for multiplication of signed integers
+    signedwallacetree(x=x,y=y,out=xdotys,of=ofsm);            
+    
+    MUX4to1(c1=c[1],c0=c[0],x0=xplusy,x1=xminusy,x2=xdotyu,x3=xdotys,out=z2);
+
+    MUX2to1(x=z2,y=z1,sel=c[2],out=z);
+
+    //generation of overflow bit using mux
+    subMUX4to1(s1=c[1],s0=c[0],x0=aof,x1=sof,x2=ofum,x3=ofsm,out=tempof); 
+    subMUX2to1(x=tempof,y=false,sel=c[2],out=of);
+
+    //generation of equality bit 
+    Comparator(x=x,y=y,out=eq);
+}

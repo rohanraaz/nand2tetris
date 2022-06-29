@@ -1,0 +1,21 @@
+/*
+    8 bit 4 to 1 multiplexer (8 bit)
+
+    out bus = x0 if c1=0,c0=0
+            = x1 if c1=0,c0=1
+            = x2 if c1=1,c0=0
+            = x3 if c1=1,c0=0 
+*/
+CHIP MUX4to1{
+    IN c1,c0,x0[8],x1[8],x2[8],x3[8];
+    OUT out[8];
+    PARTS:
+    subMUX4to1(s1=c1,s0=c0,x0=x0[0],x1=x1[0],x2=x2[0],x3=x3[0],out=out[0]);
+    subMUX4to1(s1=c1,s0=c0,x0=x0[1],x1=x1[1],x2=x2[1],x3=x3[1],out=out[1]);
+    subMUX4to1(s1=c1,s0=c0,x0=x0[2],x1=x1[2],x2=x2[2],x3=x3[2],out=out[2]);
+    subMUX4to1(s1=c1,s0=c0,x0=x0[3],x1=x1[3],x2=x2[3],x3=x3[3],out=out[3]);
+    subMUX4to1(s1=c1,s0=c0,x0=x0[4],x1=x1[4],x2=x2[4],x3=x3[4],out=out[4]);
+    subMUX4to1(s1=c1,s0=c0,x0=x0[5],x1=x1[5],x2=x2[5],x3=x3[5],out=out[5]);
+    subMUX4to1(s1=c1,s0=c0,x0=x0[6],x1=x1[6],x2=x2[6],x3=x3[6],out=out[6]);
+    subMUX4to1(s1=c1,s0=c0,x0=x0[7],x1=x1[7],x2=x2[7],x3=x3[7],out=out[7]);
+}

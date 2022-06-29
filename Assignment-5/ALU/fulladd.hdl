@@ -1,0 +1,24 @@
+/*
+    this is fulladder circuit
+*/
+
+CHIP fulladd{
+    IN x,y,c;
+    OUT sum,carry;
+
+    PARTS:
+    //sum= x Xor y Xor c
+    Xor(a=x, b=y, out=t);
+    Xor(a=t, b=c, out=sum);
+
+    //carry = x.y + y.c + c.x;
+    //t1=x.y
+    //t2=y.c
+    //t3=c.x
+    And(a=x, b=y, out=t1);
+    And(a=y, b=c, out=t2);
+    And(a=c, b=x, out=t3);
+
+    Or(a=t1, b=t2, out=temp);
+    Or(a=temp, b=t3, out=carry);
+}

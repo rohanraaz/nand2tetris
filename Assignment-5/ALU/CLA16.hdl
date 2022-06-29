@@ -1,0 +1,22 @@
+/*
+    this is a CLA based 16 bit adder 
+*/
+
+CHIP CLA16{
+    IN x[16],y[16];
+    OUT out[16];
+
+    PARTS:
+
+    //propagate terms generation
+    BitwiseXor16(a=x,b=y,out=p);
+
+    //generate terms
+    BitwiseAnd16(a=x,b=y,out=g);
+
+    //generation of carry bits
+    carry16(p=p,g=g,c=c);
+
+    //sum bits
+    BitwiseXor16(a=p,b=c,out=out);
+}

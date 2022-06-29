@@ -1,0 +1,17 @@
+/*
+*   this gate performs the bit wise and for 2 8-bit binary numbers
+*   out[i] = a[i] AND b[i]
+*/
+CHIP BitwiseAnd8{
+    IN x[8],y[8];
+    OUT out[8];
+    PARTS:
+    And(a=x[0], b=y[0], out=out[0]);
+    And(a=x[1], b=y[1], out=out[1]);
+    And(a=x[2], b=y[2], out=out[2]);
+    And(a=x[3], b=y[3], out=out[3]);
+    And(a=x[4], b=y[4], out=out[4]);
+    And(a=x[5], b=y[5], out=out[5]);
+    And(a=x[6], b=y[6], out=out[6]);
+    And(a=x[7], b=y[7], out=out[7]);
+}

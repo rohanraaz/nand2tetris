@@ -1,0 +1,117 @@
+/*
+ generates '9' 16-bit partial products for the product of x[8] and y[8]
+ with pp8=00000000y[7]0000000;
+*/
+CHIP signedppgenerator{
+    IN x[8],y[8];
+    OUT pp0[16],pp1[16],pp2[16],pp3[16],pp4[16],pp5[16],pp6[16],pp7[16],pp8[16];
+
+    PARTS:
+
+    //pp0 generation
+    product(x=x,yi=y[0],out=pp0[0..7],out[7..7]=last0);
+    And(a=last0, b=last0, out=pp0[8]);
+    And(a=last0, b=last0, out=pp0[9]);
+    And(a=last0, b=last0, out=pp0[10]);
+    And(a=last0, b=last0, out=pp0[11]);
+    And(a=last0, b=last0, out=pp0[12]);
+    And(a=last0, b=last0, out=pp0[13]);
+    And(a=last0, b=last0, out=pp0[14]);
+    And(a=last0, b=last0, out=pp0[15]);
+
+    //pp1 generation
+    And(a=false, b=false, out=pp1[0]);
+    product(x=x,yi=y[1],out=pp1[1..8],out[7..7]=last1);
+    And(a=last1, b=last1, out=pp1[9]);
+    And(a=last1, b=last1, out=pp1[10]);
+    And(a=last1, b=last1, out=pp1[11]);
+    And(a=last1, b=last1, out=pp1[12]);
+    And(a=last1, b=last1, out=pp1[13]);
+    And(a=last1, b=last1, out=pp1[14]);
+    And(a=last1, b=last1, out=pp1[15]);
+
+    //pp2 generation
+    And(a=false, b=false, out=pp2[0]);
+    And(a=false, b=false, out=pp2[1]);
+    product(x=x,yi=y[2],out=pp2[2..9],out[7..7]=last2);
+    And(a=last2, b=last2, out=pp2[10]);
+    And(a=last2, b=last2, out=pp2[11]);
+    And(a=last2, b=last2, out=pp2[12]);
+    And(a=last2, b=last2, out=pp2[13]);
+    And(a=last2, b=last2, out=pp2[14]);
+    And(a=last2, b=last2, out=pp2[15]);
+
+    //pp3 generation
+    And(a=false, b=false, out=pp3[0]);
+    And(a=false, b=false, out=pp3[1]);
+    And(a=false, b=false, out=pp3[2]);
+    product(x=x,yi=y[3],out=pp3[3..10],out[7..7]=last3);
+    And(a=last3, b=last3, out=pp3[11]);
+    And(a=last3, b=last3, out=pp3[12]);
+    And(a=last3, b=last3, out=pp3[13]);
+    And(a=last3, b=last3, out=pp3[14]);
+    And(a=last3, b=last3, out=pp3[15]);
+
+    //pp4 generator
+    And(a=false, b=false, out=pp4[0]);
+    And(a=false, b=false, out=pp4[1]);
+    And(a=false, b=false, out=pp4[2]);
+    And(a=false, b=false, out=pp4[3]);
+    product(x=x,yi=y[4],out=pp4[4..11],out[7..7]=last4);
+    And(a=last4, b=last4, out=pp4[12]);
+    And(a=last4, b=last4, out=pp4[13]);
+    And(a=last4, b=last4, out=pp4[14]);
+    And(a=last4, b=last4, out=pp4[15]);
+
+    //pp5 generator
+    And(a=false, b=false, out=pp5[0]);
+    And(a=false, b=false, out=pp5[1]);
+    And(a=false, b=false, out=pp5[2]);
+    And(a=false, b=false, out=pp5[3]);
+    And(a=false, b=false, out=pp5[4]);
+    product(x=x,yi=y[5],out=pp5[5..12],out[7..7]=last5);
+    And(a=last5, b=last5, out=pp5[13]);
+    And(a=last5, b=last5, out=pp5[14]);
+    And(a=last5, b=last5, out=pp5[15]);
+
+    //pp6 generator
+    And(a=false, b=false, out=pp6[0]);
+    And(a=false, b=false, out=pp6[1]);
+    And(a=false, b=false, out=pp6[2]);
+    And(a=false, b=false, out=pp6[3]);
+    And(a=false, b=false, out=pp6[4]);
+    And(a=false, b=false, out=pp6[5]);
+    product(x=x,yi=y[6],out=pp6[6..13],out[7..7]=last6);
+    And(a=last6, b=last6, out=pp6[14]);
+    And(a=last6, b=last6, out=pp6[15]);
+
+    //pp7 generator -> take the complement i.e x'.y[7]
+    BitwiseXor8(x=x,y[0]=y[7],y[1]=y[7],y[2]=y[7],y[3]=y[7],y[4]=y[7],y[5]=y[7],y[6]=y[7],y[7]=y[7],out=newx);
+    And(a=false, b=false, out=pp7[0]);
+    And(a=false, b=false, out=pp7[1]);
+    And(a=false, b=false, out=pp7[2]);
+    And(a=false, b=false, out=pp7[3]);
+    And(a=false, b=false, out=pp7[4]);
+    And(a=false, b=false, out=pp7[5]);
+    And(a=false, b=false, out=pp7[6]);
+    product(x=newx,yi=y[7],out=pp7[7..14],out[7..7]=last7);
+    And(a=last7, b=last7, out=pp7[15]);
+
+    //pp8 generator pp8=00000000y[7]0000000;
+    Not(in=true, out=pp8[0]);
+    Not(in=true, out=pp8[1]);
+    Not(in=true, out=pp8[2]);
+    Not(in=true, out=pp8[3]);
+    Not(in=true, out=pp8[4]);
+    Not(in=true, out=pp8[5]);
+    Not(in=true, out=pp8[6]);
+    And(a=y[7], b=y[7], out=pp8[7]);
+    Not(in=true, out=pp8[8]);
+    Not(in=true, out=pp8[9]);
+    Not(in=true, out=pp8[10]);
+    Not(in=true, out=pp8[11]);
+    Not(in=true, out=pp8[12]);
+    Not(in=true, out=pp8[13]);
+    Not(in=true, out=pp8[14]);
+    Not(in=true, out=pp8[15]);
+}

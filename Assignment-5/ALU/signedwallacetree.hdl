@@ -1,0 +1,63 @@
+CHIP signedwallacetree{
+    IN x[8],y[8];
+    OUT out[8],of;
+
+    PARTS:
+
+    //obtaining partial products
+    signedppgenerator(x=x,y=y,pp0=pp0,pp1=pp1,pp2=pp2,pp3=pp3,pp4=pp4,pp5=pp5,pp6=pp6,pp7=pp7,pp8=pp8);
+
+    //pp0,pp1,pp2,pp3,pp4,pp5,pp6,pp7,pp8 -> level0
+
+    //level0
+    //(pp0+pp1+pp2) = s00,c00 (pp3+pp4+pp5) = s01,c01 (pp6+pp7+pp8) = s02,c02
+    reducer(x=pp0,y=pp1,z=pp2,s=s00,c=c00);
+    reducer(x=pp3,y=pp4,z=pp5,s=s01,c=c01);
+    reducer(x=pp6,y=pp7,z=pp8,s=s02,c=c02);
+
+    //level1 s00,c00,s01,c01,s02,c02
+    //(s00+c00+s01) = s10,c10  (c01+s02+c02) = s11,c11
+    reducer(x=s00,y=c00,z=s01,s=s10,c=c10);
+    reducer(x=c01,y=s02,z=c02,s=s11,c=c11);
+
+    //level2 s10,c10,s11,c11
+    //(s10+c10+s11) = s20,c20   c11 -> carried to next level
+    reducer(x=s10,y=c10,z=s11,s=s20,c=c20);
+
+    //level3 s20,c20,c11
+    //(s20+c20+c11) = s30,c30
+    reducer(x=s20,y=c20,z=c11,s=s30,c=c30);
+
+    //adding s30,c30 gives product of x and y
+    CLA16(x=s30,y=c30,out[0..7]=out,out[7]=p7,out[8]=p8,out[9]=p9,out[10]=p10,out[11]=p11,out[12]=p12,out[13]=p13,out[14]=p14,out[15]=p15);
+    /*
+    of = (x[7] xnor y[7]).(P[7]+P[8]+P[9]+P[10]+P[11]+P[12]+P[13]+P[14]+P[15]) + 
+          (x[7] XOR y[7]).(P'[7]+P'[8]+P'[9]+P'[10]+P'[11]+P'[12]+P'[13]+P'[14]+P'[15])
+    */
+    Xnor(a=x[7],b=y[7],out=eq);
+    Xor(a=x[7], b=y[7], out=xor);
+
+    Not(in=p7, out=np7);
+    Not(in=p8, out=np8);
+    Not(in=p9, out=np9);
+    Not(in=p10, out=np10);
+    Not(in=p11, out=np11);
+    Not(in=p12, out=np12);
+    Not(in=p13, out=np13);
+    Not(in=p14, out=np14);
+    Not(in=p15, out=np15);
+
+    Or4(a=p7,b=p8,c=p9,d=p10,out=or1);
+    Or4(a=p11,b=p12,c=p13,d=p14,out=or2);
+    Or3(a=or1,b=or2,c=p15,out=t1);
+
+    And(a=eq, b=t1, out=of1);
+
+    Or4(a=np7,b=np8,c=np9,d=np10,out=orn1);
+    Or4(a=np11,b=np12,c=np13,d=np14,out=orn2);
+    Or3(a=orn1,b=orn2,c=np15,out=t2);
+
+    And(a=xor, b=t2, out=of2);
+
+    Or(a=of1, b=of2, out=of);
+}
